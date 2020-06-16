@@ -68,7 +68,7 @@
                 <img
                   :alt="mod.name"
                   :src="mod.screenshot"
-                  class="mx-auto mt-2"
+                  class="mt-2"
                   decoding="async"
                   importance="low"
                   loading="lazy"
@@ -121,7 +121,6 @@
                 <img
                   :alt="resource.name"
                   :src="resource.screenshot"
-                  class="mx-auto"
                   decoding="async"
                   importance="low"
                   loading="lazy"
@@ -163,6 +162,14 @@ export default Vue.extend({
 
   data: () => ({
     mods: [
+      {
+        name: 'Forge',
+        description: '模組加載器（安裝模組必備）',
+        screenshot: null,
+        official: 'https://minecraftforge.net',
+        download: '/mods/forge-installer-1.15.2-31.2.0.jar',
+        sha1: '679ea40cab6e5c9828dd45c7bf326f65b8bc89b7',
+      },
       {
         name: 'Apple Skin',
         description: '顯示食物飽足值',
@@ -206,7 +213,7 @@ export default Vue.extend({
       },
       {
         name: 'Journey Map',
-        description: '顯示食物飽足值',
+        description: '地圖紀錄工具',
         screenshot: require('~/assets/imgs/mods/journey-map.webp'),
         official: 'https://www.curseforge.com/minecraft/mc-mods/journeymap',
         download: '/mods/journey-map-1.15.2-forge-5.7.0b2.jar',
@@ -301,6 +308,12 @@ export default Vue.extend({
 
 .info td {
   @apply text-center whitespace-no-wrap;
+}
+
+.info img {
+  @apply mx-auto;
+
+  width: 30rem;
 }
 
 table {
