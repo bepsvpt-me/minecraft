@@ -18,14 +18,14 @@ export default {
   },
 
   head: {
-    title: 'Our Minecraft Server',
+    title: 'The World Minecraft Server',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       {
         hid: 'description',
         name: 'description',
-        content: 'Our Minecraft Server Info',
+        content: 'The World Minecraft Server Info',
       },
     ],
   },
