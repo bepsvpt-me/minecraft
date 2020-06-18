@@ -1,17 +1,19 @@
 <template>
   <main>
     <section class="relative">
-      <img
+      <media
+        :open="false"
         alt="cover"
-        class="object-cover w-full cover"
-        src="~/assets/imgs/cover.webp"
+        class="cover"
+        content-class="object-cover w-full"
+        src="cover.jpg"
       />
 
       <div class="absolute inset-x-0 bottom-0 my-8 text-center">
         <h1
           class="inline-block px-4 bg-black bg-opacity-75 text-6xl text-gray-100"
         >
-          Our Minecraft Server
+          The World Minecraft Server
         </h1>
       </div>
     </section>
@@ -33,7 +35,24 @@
 
           <tr>
             <th>正版驗證</th>
-            <td>已啟用</td>
+            <td>未啟用</td>
+          </tr>
+
+          <tr>
+            <th>白名單機制</th>
+            <td>未啟用</td>
+          </tr>
+
+          <tr v-if="status.timestamp">
+            <th>
+              <p>伺服器狀態</p>
+              <p>（{{ updatedAt }}）</p>
+            </th>
+
+            <td class="font-mono">
+              <p>線上人數：{{ online }} 人</p>
+              <p>系統負載：{{ loading }} ％</p>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -42,105 +61,95 @@
     <section class="info">
       <h2>模組推薦（Java 客戶端 1.15.2）</h2>
 
-      <table>
-        <thead>
-          <tr>
-            <th rowspan="2">模組名稱</th>
-            <th rowspan="2">簡介</th>
-            <th colspan="3">下載</th>
-          </tr>
+      <div class="overflow-x-auto">
+        <table>
+          <thead>
+            <tr>
+              <th rowspan="2">模組名稱</th>
+              <th rowspan="2">簡介</th>
+              <th colspan="3">下載</th>
+            </tr>
 
-          <tr>
-            <th>官網</th>
-            <th>本站</th>
-            <th>SHA1</th>
-          </tr>
-        </thead>
+            <tr>
+              <th>官網</th>
+              <th>本站</th>
+              <th>SHA1</th>
+            </tr>
+          </thead>
 
-        <tbody>
-          <tr v-for="mod in mods" :key="mod.name">
-            <td>{{ mod.name }}</td>
+          <tbody>
+            <tr v-for="mod in mods" :key="mod.name">
+              <td>{{ mod.name }}</td>
 
-            <td>
-              <span>{{ mod.description }}</span>
+              <td>
+                <span>{{ mod.description }}</span>
 
-              <a v-if="mod.screenshot" :href="mod.screenshot" target="_blank">
-                <img
+                <media
+                  v-if="mod.screenshot"
                   :alt="mod.name"
                   :src="mod.screenshot"
-                  class="mt-2"
-                  decoding="async"
-                  importance="low"
-                  loading="lazy"
-                  referrerpolicy="no-referrer"
+                  content-class="mt-2"
                 />
-              </a>
-            </td>
+              </td>
 
-            <td>
-              <external-link :href="mod.official" text="前往" />
-            </td>
+              <td>
+                <external-link :href="mod.official" text="前往" />
+              </td>
 
-            <td>
-              <external-link :href="mod.download" download text="下載" />
-            </td>
+              <td>
+                <external-link :href="mod.download" download text="下載" />
+              </td>
 
-            <td>{{ mod.sha1 }}</td>
-          </tr>
-        </tbody>
-      </table>
+              <td>{{ mod.sha1 }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </section>
 
     <section class="info">
       <h2>材質包 ＆ 光影</h2>
 
-      <table>
-        <thead>
-          <tr>
-            <th rowspan="2">名稱</th>
-            <th rowspan="2">截圖</th>
-            <th colspan="3">下載</th>
-          </tr>
+      <div class="overflow-x-auto">
+        <table>
+          <thead>
+            <tr>
+              <th rowspan="2">名稱</th>
+              <th rowspan="2">截圖</th>
+              <th colspan="3">下載</th>
+            </tr>
 
-          <tr>
-            <th>官網</th>
-            <th>本站</th>
-            <th>SHA1</th>
-          </tr>
-        </thead>
+            <tr>
+              <th>官網</th>
+              <th>本站</th>
+              <th>SHA1</th>
+            </tr>
+          </thead>
 
-        <tbody>
-          <tr v-for="resource in resources" :key="resource.name">
-            <td>
-              <p>{{ resource.name }}</p>
-              <span>{{ resource.description }}</span>
-            </td>
+          <tbody>
+            <tr v-for="resource in resources" :key="resource.name">
+              <td>
+                <p>{{ resource.name }}</p>
+                <span>{{ resource.description }}</span>
+              </td>
 
-            <td>
-              <a :href="resource.screenshot" target="_blank">
-                <img
-                  :alt="resource.name"
-                  :src="resource.screenshot"
-                  decoding="async"
-                  importance="low"
-                  loading="lazy"
-                  referrerpolicy="no-referrer"
-                />
-              </a>
-            </td>
+              <td>
+                <media :alt="resource.name" :src="resource.screenshot" />
+              </td>
 
-            <td>
-              <external-link :href="resource.official" text="前往" />
-            </td>
+              <td>
+                <external-link :href="resource.official" text="前往" />
+              </td>
 
-            <td>
-              <external-link :href="resource.download" download text="下載" />
-            </td>
+              <td>
+                <external-link :href="resource.download" download text="下載" />
+              </td>
 
-            <td>{{ resource.sha1 }}</td>
-          </tr>
-        </tbody>
-      </table>
+              <td>{{ resource.sha1 }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </section>
 
     <footer class="py-6 text-center">
@@ -154,13 +163,17 @@
 <script lang="ts">
 import Vue from 'vue'
 import ExternalLink from '~/components/external-link.vue'
+import Media from '~/components/media.vue'
 
 export default Vue.extend({
   components: {
     ExternalLink,
+    Media,
   },
 
   data: () => ({
+    intervalId: 0,
+
     mods: [
       {
         name: 'Forge',
@@ -171,9 +184,17 @@ export default Vue.extend({
         sha1: '679ea40cab6e5c9828dd45c7bf326f65b8bc89b7',
       },
       {
+        name: 'OptiFine',
+        description: '光影所須之模組',
+        screenshot: null,
+        official: 'https://optifine.net',
+        download: '/mods/optifine-1.15.2-forge-pre26.jar',
+        sha1: '4ea53e3d202239c5ffa2affa809e36998194f1bc',
+      },
+      {
         name: 'Apple Skin',
         description: '顯示食物飽足值',
-        screenshot: require('~/assets/imgs/mods/apple-skin.webp'),
+        screenshot: 'mods/apple-skin.gif',
         official: 'https://www.curseforge.com/minecraft/mc-mods/appleskin',
         download: '/mods/apple-skin-1.15.2-forge-1.0.13.jar',
         sha1: '1220c97d59e6089a6bc2ca419edc2e9c57f3e8ff',
@@ -181,7 +202,7 @@ export default Vue.extend({
       {
         name: 'Durability Viewer',
         description: '顯示武器、裝備、道具耐久值',
-        screenshot: require('~/assets/imgs/mods/durability-viewer.webp'),
+        screenshot: 'mods/durability-viewer.jpg',
         official:
           'https://www.curseforge.com/minecraft/mc-mods/giselbaers-durability-viewer',
         download: '/mods/durability-viewer-1.15.2-forge-1.7.1.jar',
@@ -190,7 +211,7 @@ export default Vue.extend({
       {
         name: 'Hwyla',
         description: '顯示目標方塊資訊',
-        screenshot: require('~/assets/imgs/mods/hwyla.webp'),
+        screenshot: 'mods/hwyla.jpg',
         official: 'https://www.curseforge.com/minecraft/mc-mods/hwyla',
         download: '/mods/hwyla-1.15.2-forge-1.10.8.jar',
         sha1: '30c93f370d6826044c20cae7072b09791dffe9be',
@@ -214,7 +235,7 @@ export default Vue.extend({
       {
         name: 'Journey Map',
         description: '地圖紀錄工具',
-        screenshot: require('~/assets/imgs/mods/journey-map.webp'),
+        screenshot: 'mods/journey-map.jpg',
         official: 'https://www.curseforge.com/minecraft/mc-mods/journeymap',
         download: '/mods/journey-map-1.15.2-forge-5.7.0b2.jar',
         sha1: '6f9b0e18cace41d682d7308b33d9e58c862091f4',
@@ -222,7 +243,7 @@ export default Vue.extend({
       {
         name: 'Just Enough Items',
         description: '物品清單及合成表',
-        screenshot: require('~/assets/imgs/mods/just-enough-items.webp'),
+        screenshot: 'mods/just-enough-items.jpg',
         official: 'https://www.curseforge.com/minecraft/mc-mods/jei',
         download: '/mods/just-enough-items-1.15.2-forge-6.0.0.4.jar',
         sha1: 'a3bb69be3c5056c3505ecae6484cf70792cac742',
@@ -246,7 +267,7 @@ export default Vue.extend({
       {
         name: 'Mouse Tweaks',
         description: '平均分配合成材料',
-        screenshot: require('~/assets/imgs/mods/mouse-tweaks.webp'),
+        screenshot: 'mods/mouse-tweaks.gif',
         official: 'https://www.curseforge.com/minecraft/mc-mods/mouse-tweaks',
         download: '/mods/mouse-tweaks-1.15.2-forge-2.13.jar',
         sha1: 'fd0eae9285ddadbadade0d0704b3852e9cd41241',
@@ -254,18 +275,10 @@ export default Vue.extend({
       {
         name: 'Neat',
         description: '顯示生物生命值',
-        screenshot: require('~/assets/imgs/mods/neat.webp'),
+        screenshot: 'mods/neat.jpg',
         official: 'https://www.curseforge.com/minecraft/mc-mods/neat',
         download: '/mods/neat-1.15.2-forge-1.6.22.jar',
         sha1: 'd8aea0363c99e62e821e101f02dcbb1f82585e74',
-      },
-      {
-        name: 'OptiFine',
-        description: '光影所須之模組',
-        screenshot: null,
-        official: 'https://optifine.net',
-        download: '/mods/optifine-1.15.2-forge-pre26.jar',
-        sha1: '4ea53e3d202239c5ffa2affa809e36998194f1bc',
       },
     ],
 
@@ -273,7 +286,7 @@ export default Vue.extend({
       {
         name: 'Faithful x32',
         description: '材質包',
-        screenshot: require('~/assets/imgs/resources/faithful-x32.webp'),
+        screenshot: 'resources/faithful-x32.jpg',
         official: 'https://faithful.team',
         download: '/resources/faithful-32x-1.15.2.zip',
         sha1: 'e120676275206f4a8bb18147d28935a353963fe9',
@@ -281,20 +294,75 @@ export default Vue.extend({
       {
         name: 'projectLUMA',
         description: '光影包',
-        screenshot: require('~/assets/imgs/resources/project-luma.webp'),
+        screenshot: 'resources/project-luma.jpg',
         official: 'https://dedelner.net/projectluma/',
         download: '/resources/projectluma-1.32.zip',
         sha1: '9e319adf96598e6082ffb9bbe751c9e303c22a5e',
       },
     ],
 
+    status: {
+      online: 0,
+      loading: 0,
+      timestamp: 0,
+    },
+
     year: new Date().getFullYear(),
   }),
+
+  computed: {
+    online(): string {
+      return this.status.online.toString(10).padStart(2, ' ')
+    },
+
+    loading(): string {
+      return this.status.loading.toFixed(0).padStart(2, '0')
+    },
+
+    updatedAt(): string {
+      const now = parseInt((+new Date() / 1000).toFixed(0), 10)
+      const diff = now - this.status.timestamp
+
+      if (diff < 60) {
+        return `${diff} 秒鐘前`
+      }
+
+      return `${(diff / 60).toFixed(0)} 分鐘前`
+    },
+  },
+
+  created() {
+    this.fetch()
+  },
+
+  mounted() {
+    this.intervalId = window.setInterval(this.fetch, 1000 * 60 * 5)
+  },
+
+  beforeDestroy() {
+    clearInterval(this.intervalId)
+  },
+
+  methods: {
+    async fetch() {
+      const res = await fetch('/status')
+
+      const content = await res.text()
+
+      const data = content.split(' ').map((value) => parseInt(value, 10))
+
+      this.status.online = data[0]
+
+      this.status.loading = (data[1] / (data[2] || 1)) * 100
+
+      this.status.timestamp = data[3]
+    },
+  },
 })
 </script>
 
 <style scoped>
-.cover {
+.cover::v-deep img {
   height: 24rem;
 }
 
@@ -310,10 +378,11 @@ export default Vue.extend({
   @apply text-center whitespace-no-wrap;
 }
 
-.info img {
+.info::v-deep img {
   @apply mx-auto;
 
-  width: 30rem;
+  max-width: unset;
+  width: 25rem;
 }
 
 table {
