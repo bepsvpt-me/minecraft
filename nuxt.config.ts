@@ -1,22 +1,25 @@
+import { NuxtConfig } from '@nuxt/types'
+
+const isDev = process.env.NODE_ENV !== 'production'
+
 export default {
-  mode: 'spa',
+  // https://nuxtjs.org/api/configuration-mode
+  mode: 'universal',
 
-  modern: true,
+  // https://nuxtjs.org/api/configuration-modern
+  modern: !isDev,
 
-  globalName: 'minecraft',
+  // https://nuxtjs.org/api/configuration-target
+  target: 'static',
 
-  loading: false,
-
-  loadingIndicator: false,
-
-  render: {
-    injectScripts: false,
-
-    resourceHints: false,
-
-    csp: true,
+  // https://nuxtjs.org/api/configuration-vue-config
+  vue: {
+    config: {
+      devtools: true,
+    },
   },
 
+  // https://nuxtjs.org/api/configuration-head
   head: {
     title: 'The World Minecraft Server',
     meta: [
@@ -30,30 +33,37 @@ export default {
     ],
   },
 
-  /*
-   ** Nuxt.js dev-modules
-   */
+  // https://nuxtjs.org/api/configuration-global-name
+  globalName: 'minecraft',
+
+  // https://nuxtjs.org/api/configuration-loading
+  loading: false,
+
+  // https://nuxtjs.org/api/configuration-loading-indicator
+  loadingIndicator: false,
+
+  // https://nuxtjs.org/api/configuration-render
+  render: {
+    // https://nuxtjs.org/api/configuration-render#injectscripts
+    injectScripts: false,
+
+    // https://nuxtjs.org/api/configuration-render#resourcehints
+    resourceHints: false,
+
+    // https://nuxtjs.org/api/configuration-render#csp
+    csp: true,
+  },
+
+  // https://nuxtjs.org/api/configuration-modules#-code-buildmodules-code-
   buildModules: [
+    // https://typescript.nuxtjs.org/
     '@nuxt/typescript-build',
     // https://github.com/nuxt-community/nuxt-tailwindcss
     '@nuxtjs/tailwindcss',
   ],
 
+  // https://nuxtjs.org/api/configuration-build
   build: {
     publicPath: '/assets/',
-
-    optimization: {
-      splitChunks: {
-        chunks: 'async',
-      },
-    },
-
-    splitChunks: {
-      commons: false,
-      layouts: false,
-      pages: false,
-      runtime: false,
-      vendor: false,
-    },
   },
-}
+} as NuxtConfig
