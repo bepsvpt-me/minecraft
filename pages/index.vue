@@ -42,18 +42,6 @@
             <th>白名單機制</th>
             <td>未啟用</td>
           </tr>
-
-          <tr v-if="status.timestamp">
-            <th>
-              <p>伺服器狀態</p>
-              <p>（{{ updatedAt }}）</p>
-            </th>
-
-            <td class="font-mono">
-              <p>線上人數：{{ online }} 人</p>
-              <p>系統負載：{{ loading }} ％</p>
-            </td>
-          </tr>
         </tbody>
       </table>
     </section>
@@ -172,8 +160,6 @@ export default Vue.extend({
   },
 
   data: () => ({
-    intervalId: 0,
-
     mods: [
       {
         name: 'Forge',
@@ -301,63 +287,8 @@ export default Vue.extend({
       },
     ],
 
-    status: {
-      online: 0,
-      loading: 0,
-      timestamp: 0,
-    },
-
     year: new Date().getFullYear(),
   }),
-
-  computed: {
-    online(): string {
-      return this.status.online.toString(10).padStart(2, ' ')
-    },
-
-    loading(): string {
-      return this.status.loading.toFixed(0).padStart(2, '0')
-    },
-
-    updatedAt(): string {
-      const now = parseInt((+new Date() / 1000).toFixed(0), 10)
-      const diff = now - this.status.timestamp
-
-      if (diff < 60) {
-        return `${diff} 秒鐘前`
-      }
-
-      return `${(diff / 60).toFixed(0)} 分鐘前`
-    },
-  },
-
-  created() {
-    this.fetch()
-  },
-
-  mounted() {
-    this.intervalId = window.setInterval(this.fetch, 1000 * 60 * 5)
-  },
-
-  beforeDestroy() {
-    clearInterval(this.intervalId)
-  },
-
-  methods: {
-    async fetch() {
-      const res = await fetch('/status')
-
-      const content = await res.text()
-
-      const data = content.split(' ').map((value) => parseInt(value, 10))
-
-      this.status.online = data[0]
-
-      this.status.loading = (data[1] / (data[2] || 1)) * 100
-
-      this.status.timestamp = data[3]
-    },
-  },
 })
 </script>
 
